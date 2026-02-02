@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Sim-to-Real | Project Report</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #fcfcfc;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* --- Header & Title --- */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: -webkit-linear-gradient(45deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- Authors Section --- */
+        .authors-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px; 
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .author-link {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .author-link:hover {
+            color: var(--accent-color);
+        }
+
+        .author-link i {
+            color: #0077b5; 
+            font-size: 1.2rem;
+        }
+
+        .affiliation {
+            text-align: center;
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        /* --- Action Buttons --- */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .btn {
+            background-color: #333;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+
+        /* --- Visuals --- */
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .content-block {
+            text-align: justify;
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto 30px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .teaser-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 10px;
+        }
+
+        /* --- Grid for Comparisons --- */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin-top: 20px;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item img {
+            width: 65%; 
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            transition: transform 0.3s;
+        }
+        
+        .comparison-item img:hover {
+            transform: scale(1.02);
+        }
+
+        /* --- Table Styling --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 700;
+        }
+
+        /* --- BibTeX --- */
+        pre {
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border-left: 5px solid var(--accent-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .authors-container { flex-direction: column; gap: 10px; }
+            .comparison-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <h1>Synthetic-to-Real Generalization<br>for Chessboard Classification</h1>
+            
+            <div class="authors-container">
+                <a href="https://www.linkedin.com/in/omer-yaish-618b1835b" target="_blank" class="author-link">
+                    <i class="fab fa-linkedin"></i> Omer Yaish
+                </a>
+                
+                <a href="https://www.linkedin.com/in/maayan-sameach" target="_blank" class="author-link">
+                    <i class="fab fa-linkedin"></i> Maayan Sameach
+                </a>
+            </div>
+
+            <div class="affiliation">
+                Department of Computer Science, Ben-Gurion University
+            </div>
+
+            <div class="buttons">
+                <a href="Final_Report.pdf" class="btn" target="_blank"><i class="fas fa-file-pdf"></i> Paper</a>
+                <a href="https://github.com/OmerYaish/Chess-Project" class="btn" target="_blank"><i class="fab fa-github"></i> Code</a>
+                <a href="#results" class="btn"><i class="fas fa-chart-pie"></i> Data</a>
+            </div>
+        </header>
+
+        <div class="section content-block">
+            <h2 class="section-title">Abstract</h2>
+            <p>
+                Accurate recognition of chessboard states from images is a significant challenge in computer vision, primarily due to the difficulty of obtaining large-scale labeled real-world datasets.
+                In this project, we address the <strong>Synthetic-to-Real</strong> domain gap by leveraging photorealistic synthetic data generated in Blender.
+                We formulate the task as a per-square classification problem using a <strong>ResNet-18</strong> architecture.
+                The primary objective of this work is to develop and evaluate a pipeline that effectively transfers knowledge from a simulated environment to real-world chessboard images, exploring various domain adaptation strategies to overcome the inherent visual differences between the two domains.
+            </p>
+        </div>
+
+        <div class="section content-block">
+            <h2 class="section-title">Methodology</h2>
+            <p>
+                Our pipeline consists of four modular stages designed to normalize the input before classification:
+            </p>
+            <br>
+            
+            <div class="video-container" style="margin-bottom: 20px;">
+                <img src="assets/pipeline.png" alt="Method Pipeline">
+            </div>
+            <p class="caption" style="margin-bottom: 30px;">
+                <strong>Figure 1: Project Overview.</strong> The system generalizes from Blender-generated synthetic boards (left) to predicted boardstate visualization (right) using a ResNet-18 per-square classifier.
+            </p>
+
+            <ul>
+                <li><strong>Synthetic Generation:</strong> Using Blender to render high-resolution (1024x1024) chessboards from FEN strings with randomized lighting and angles.</li>
+                <li><strong>Preprocessing:</strong> Detecting the board and applying perspective transformation to obtain a canonical 512x512 top-down view.</li>
+                <li><strong>Square Extraction:</strong> Cropping individual 8x8 squares with context-aware margins.</li>
+                <li><strong>Classification:</strong> A ResNet-18 model predicts one of 13 classes (12 pieces + empty) for each square.</li>
+            </ul>
+        </div>
+
+        <div class="section" id="results">
+            <h2 class="section-title">Results & Comparison</h2>
+            <p class="content-block">
+                We evaluated our model on a labeled real-world test set (REAL_TEST_FULL). The mixed training strategy proved to be the most balanced approach.
+            </p>
+            
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <img src="assets/frame_000536.jpg" style="background: #e0e0e0; min-height: 250px;">
+                    <p class="caption">Real Image</p>
+                </div>
+                <div class="comparison-item">
+                    <img src="assets/frame_000536result.png" style="background: #e0e0e0; min-height: 250px;">
+                    <p class="caption">Result</p>
+                </div>
+            </div>
+
+            <div class="content-block" style="margin-top: 40px;">
+                <h3>Quantitative Analysis</h3>
+                <p>The table below highlights the importance of real data adaptation for minority classes (Macro F1-score).</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Training Regime</th>
+                            <th>Square Accuracy</th>
+                            <th>Macro F1-score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Zero-shot (Synthetic Only)</td>
+                            <td>~0.80</td>
+                            <td>~0.19</td>
+                        </tr>
+                        <tr>
+                            <td>Fine-tuning (Real Data)</td>
+                            <td>~0.86</td>
+                            <td>~0.36</td>
+                        </tr>
+                        <tr style="background-color: #eef9ff; font-weight: bold;">
+                            <td>Mixed Training (Synth + Real)</td>
+                            <td>~0.82</td>
+                            <td>~0.37</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="section content-block">
+            <h2 class="section-title">BibTeX</h2>
+            <pre>
+@article{yaish2026chess,
+  title={Synthetic-to-Real Generalization for Chessboard Classification},
+  author={Yaish, Omer and Sameach, Maayan},
+  journal={Ben-Gurion University Project Report},
+  year={2026}
+}
+            </pre>
+        </div>
+
+    </div>
+
+</body>
+</html>
